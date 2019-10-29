@@ -1,0 +1,53 @@
+version: '3.7'
+
+services:
+  influxdb:
+    image: influxdb:1.7-alpine
+    restart: always
+    volumes:
+      - /var/lib/influxdb:/var/lib/influxdb
+  chronograf:
+    image: chronograf:1.7-alpine
+    restart: always
+    environment:
+      INFLUXDB_URL: http://influxdb:8086
+      GH_CLIENT_ID: ${GH_CLIENT_ID}
+      GH_CLIENT_SECRET: ${GH_CLIENT_SECRET}
+      TOKEN_SECRET: ${TOKEN_SECRET}
+    links:
+      - influxdb
+  kapacitor:
+    image: kapacitor:1.5-alpine
+    restart: always
+    volumes:
+      - /var/lib/kapacitor:/var/lib/kapacitor
+    environment:
+      KAPACITOR_HOSTNAME: kapacitor
+      KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
+    links:
+      - influxdb
+  caddy:
+    build: ./caddy
+    environment:
+      TLD: ${TLD}
+    restart: always
+    volumes:
+      - /var/lib/caddy:/root/.caddy
+    ports:
+      - 443:443
+    links:
+      - influxdb
+      - chronograf
+      - api
+      - homepage
+  api:
+    build: ./api
+    environment:
+      INFLUXDB_URL: http://influxdb:8086
+    links:
+      - influxdb
+  homepage:
+    build:
+      context: ./homepage
+      args:
+        TLD: '${TLD}'

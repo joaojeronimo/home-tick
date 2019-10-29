@@ -1,0 +1,20 @@
+{
+  "name": "homepage",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server --open --config webpack.config.js",
+    "build": "webpack --config webpack.config.production.js --env.TLD=$TLD",
+    "build:dev": "webpack --config webpack.config.js --env.TLD=$TLD"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^3.2.0",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.6.4",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.9.0",
+    "webpack-merge": "^4.2.2"
+  }
+}

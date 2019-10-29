@@ -1,0 +1,27 @@
+{$TLD} {
+  proxy / homepage:9090
+}
+
+api.{$TLD} {
+  header / {
+    Access-Control-Allow-Origin  * # should be https://${TLD} but is not being substituted
+    Access-Control-Allow-Methods "GET, POST, OPTIONS"
+  }
+  proxy / api:9999
+}
+
+dashboard.{$TLD} {
+  proxy / chronograf:8888
+}
+
+write.{$TLD} {
+  tls {
+    protocols tls1.2 tls1.3
+    ciphers ECDHE-ECDSA-AES256-GCM-SHA384 ECDHE-RSA-AES256-GCM-SHA384 ECDHE-ECDSA-AES128-GCM-SHA256 ECDHE-RSA-AES128-GCM-SHA256 ECDHE-ECDSA-WITH-CHACHA20-POLY1305 ECDHE-RSA-WITH-CHACHA20-POLY1305 ECDHE-RSA-AES256-CBC-SHA ECDHE-RSA-AES128-CBC-SHA ECDHE-ECDSA-AES256-CBC-SHA ECDHE-ECDSA-AES128-CBC-SHA RSA-AES256-CBC-SHA RSA-AES128-CBC-SHA ECDHE-RSA-3DES-EDE-CBC-SHA RSA-3DES-EDE-CBC-SHA
+    key_type rsa2048
+  }
+
+  basicauth / sensor iijdws0982u308djwe80jd02dj820j3d082
+
+  proxy /write influxdb:8086
+}

@@ -1,0 +1,26 @@
+{$TLD} {
+  tls self_signed
+  proxy / homepage:9090
+}
+
+api.{$TLD} {
+  tls self_signed
+  header / {
+    Access-Control-Allow-Origin  https://${TLD}
+    Access-Control-Allow-Methods "GET, POST, OPTIONS"
+  }
+  proxy / api:9999
+}
+
+dashboard.{$TLD} {
+  tls self_signed
+  proxy / chronograf:8888
+}
+
+write.{$TLD} {
+  tls self_signed
+
+  basicauth / sensor iijdws0982u308djwe80jd02dj820j3d082
+
+  proxy /write influxdb:8086
+}

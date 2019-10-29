@@ -1,0 +1,56 @@
+version: '3.7'
+
+services:
+  influxdb:
+    image: influxdb:1.7-alpine
+    volumes:
+      - ./data/influxdb:/var/lib/influxdb
+    ports:
+      - 8086:8086
+  chronograf:
+    image: chronograf:1.7-alpine
+    environment:
+      INFLUXDB_URL: http://influxdb:8086
+    links:
+      - influxdb
+    ports:
+      - 8888:8888
+  kapacitor:
+    image: kapacitor:1.5-alpine
+    environment:
+      KAPACITOR_HOSTNAME: kapacitor
+      KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
+    links:
+      - influxdb
+    volumes:
+      - ./data/kapacitor:/var/lib/kapacitor
+  caddy:
+    build: ./caddy
+    environment:
+      TLD: '${TLD}'
+    volumes:
+      - ./caddy/Caddyfile.dev:/app/Caddyfile
+    ports:
+      - 443:443
+      - 2015:2015
+    links:
+      - influxdb
+      - chronograf
+      - api
+      - homepage
+  api:
+    build: ./api
+    environment:
+      INFLUXDB_URL: http://influxdb:8086
+    ports:
+      - 9999:9999
+    links:
+      - influxdb
+  homepage:
+    build:
+      context: ./homepage
+      args:
+        TLD: '${TLD}'
+
+    ports:
+      - 9090:9090
