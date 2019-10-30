@@ -9,7 +9,7 @@ dashboard. I currently use this for tracking air quality data from [these sensor
 This is a project made at home for personal use and with non sensible technology choices on purpose.
 It may very well fail, you may find poor implementations and decisions, but for the most part, it's fun to work on.
 
-I'm slowly but surely making everything parameterized so it can be ran by anyone. Christian runs this very same repo for himself :)
+Everything is parameterized and configurable through environment variables (only two required!). Christian runs this himself!
 
 ## Architecture
 
