@@ -1,10 +1,11 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
+const { get } = require('lodash')
 
 module.exports = env => ({
   mode: 'development',
-  entry: './src/index.ts',
+  entry: './src/index.tsx',
   module: {
     rules: [
       {
@@ -22,10 +23,15 @@ module.exports = env => ({
     path: path.resolve(__dirname, 'dist'),
   },
   plugins: [
-    new HtmlWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      title: 'measurements',
+      meta: {
+        viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no',
+      },
+    }),
     new webpack.DefinePlugin({
       'process.env': {
-        TLD: JSON.stringify(env.TLD),
+        TLD: JSON.stringify(get(env, 'TLD', 'localhost')),
       },
     }),
   ],

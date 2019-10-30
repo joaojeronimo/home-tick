@@ -21,7 +21,7 @@ func buildQuery(measurements []string) string {
 var query = client.NewQuery(buildQuery(measurementLabels), "indoor", "")
 
 type measurement struct {
-	Label string      `json:"label"`
+	ID    string      `json:"id"`
 	Value json.Number `json:"value"`
 	Unit  string      `json:"unit,omitempty"`
 }
@@ -31,7 +31,7 @@ func mapMeasurements(results []client.Result) response {
 	r := response{}
 	for i, result := range results {
 		r = append(r, measurement{
-			Label: measurementLabels[i],
+			ID:    measurementLabels[i],
 			Value: result.Series[0].Values[0][1].(json.Number),
 		})
 	}

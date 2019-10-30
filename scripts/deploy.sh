@@ -19,7 +19,7 @@ rsync \
   --exclude-from="$excludes" \
   --include='.env' \
   --progress \
-  . $REMOTE_SSH_ADDR:~/app2
+  . $REMOTE_SSH_ADDR:~/app
 
 ssh $REMOTE_SSH_ADDR 'bash --login -c "\
 		cd app && \

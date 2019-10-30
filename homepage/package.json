@@ -4,11 +4,15 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --open --config webpack.config.js",
+    "start": "webpack-dev-server --open --config webpack.config.js --env.TLD=$TLD",
     "build": "webpack --config webpack.config.production.js --env.TLD=$TLD",
     "build:dev": "webpack --config webpack.config.js --env.TLD=$TLD"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.144",
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.3",
+    "@types/styled-components": "^4.1.20",
     "html-webpack-plugin": "^3.2.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.6.4",
@@ -16,5 +20,11 @@
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.9.0",
     "webpack-merge": "^4.2.2"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "styled-components": "^4.4.0"
   }
 }
