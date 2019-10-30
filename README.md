@@ -4,6 +4,8 @@ A [TICK](https://www.influxdata.com/blog/introduction-to-influxdatas-influxdb-an
 you can use to track metrics of devices in your home. Comes with a secured TICK setup, an api and homepage for you to implement your public your own public
 dashboard. I currently use this for tracking air quality data from [these sensors](https://luftdaten.info/).
 
+![PM2.5, PM10, temperature and humidity charts](/charts.png)
+
 This is a project made at home for personal use and with non sensible technology choices on purpose.
 It may very well fail, you may find poor implementations and decisions, but for the most part, it's fun to work on.
 
