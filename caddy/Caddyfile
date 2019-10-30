@@ -21,7 +21,7 @@ write.{$TLD} {
     key_type rsa2048
   }
 
-  basicauth / sensor iijdws0982u308djwe80jd02dj820j3d082
+  basicauth / {$SENSOR_USERNAME} ${SENSOR_PASSWORD}
 
   proxy /write influxdb:8086
 }

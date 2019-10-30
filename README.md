@@ -50,6 +50,8 @@ Besides oauth2 provider settings for Chronograf, make sure you define these vari
 - `TLD`: buy a top level domain name, point it to a machine where you'll be running this, define that TLD as the environment variable. Cady will take care of setting up TLS certificates for the relevant subdomains with Let's Encrypt.
 - `REMOTE_SSH_ADDR`: arguments to connect via ssh and rsync, which we use for deployment. `username@host:port` is valid for instance.
 - `SSH_COMMAND`: your ssh command. If you haven't specified what ssh key to use in your `~/.ssh/config`, set this variable to `ssh -i path/to/your.key`. You may leave this empty and the plain `ssh` command will be used.
+- `SENSOR_USERNAME`: basic auth username for the sensor write endpoint. The only auth method the sensor firmware supports
+- `SENSOR_PASSWORD`: basic auth password for the sensor write endpoint.
 
 ### 2. Deploy
 
