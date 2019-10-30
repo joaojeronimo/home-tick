@@ -1,6 +1,6 @@
 # home-tick
 
-A [TICK](https://www.influxdata.com/blog/introduction-to-influxdatas-influxdb-and-tick-stack/) stack for the home. Get an instance, point a TLD at it, and
+A [TICK](https://www.influxdata.com/blog/introduction-to-influxdatas-influxdb-and-tick-stack/) stack for the home. Get an instance, point a top level domain at it, and
 you can use to track metrics of devices in your home. Comes with a secured TICK setup, an api and homepage for you to implement your public your own public
 dashboard. I currently use this for tracking air quality data from [these sensors](https://luftdaten.info/).
 
