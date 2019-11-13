@@ -10,32 +10,47 @@ import (
 
 var measurementLabels = []string{"SDS_P1", "SDS_P2", "humidity", "temperature"}
 
-func buildQuery(measurements []string) string {
+func buildQuery(measurements []string, database string) string {
 	query := ""
 	for _, measurement := range measurements {
-		query = fmt.Sprintf(`%s SELECT last("%s") FROM "indoor"."autogen"."feinstaub";`, query, measurement)
+		query = fmt.Sprintf(`%s SELECT last("%s") FROM %s;`, query, measurement, database)
 	}
 	return query
 }
 
-var query = client.NewQuery(buildQuery(measurementLabels), "indoor", "")
+var indoorQuery = client.NewQuery(buildQuery(measurementLabels, `"indoor"."autogen"."feinstaub"`), "indoor", "")
+var outdoorQuery = client.NewQuery(buildQuery(measurementLabels, `"outdoor"."autogen"."feinstaub"`), "outdoor", "")
 
 type measurement struct {
 	ID    string      `json:"id"`
 	Value json.Number `json:"value"`
 	Unit  string      `json:"unit,omitempty"`
 }
-type response []measurement
 
-func mapMeasurements(results []client.Result) response {
-	r := response{}
+func mapMeasurements(results []client.Result) []measurement {
+	measurements := []measurement{}
 	for i, result := range results {
-		r = append(r, measurement{
+		if len(result.Series) <= 0 {
+			continue
+		}
+		measurements = append(measurements, measurement{
 			ID:    measurementLabels[i],
 			Value: result.Series[0].Values[0][1].(json.Number),
 		})
 	}
-	return r
+	return measurements
+}
+
+func getResults(c client.Client, query client.Query) ([]client.Result, error) {
+	response, err := c.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	if response.Error() != nil {
+		return nil, response.Error()
+	}
+
+	return response.Results, nil
 }
 
 func getInitialPayloadHandler(w http.ResponseWriter, r *http.Request) {
@@ -47,14 +62,25 @@ func getInitialPayloadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer c.Close()
 
-	response, err := c.Query(query)
+	indoorResults, err := getResults(c, indoorQuery)
 	if err != nil {
 		panic(err)
 	}
-	if response.Error() != nil {
-		panic(response.Error())
+
+	outdoorResults, err := getResults(c, outdoorQuery)
+	if err != nil {
+		panic(err)
+	}
+
+	response := struct {
+		Indoor []measurement `json:"indoor"`
+		Outdoor []measurement `json:"outdoor"`
+	}{
+		Indoor: mapMeasurements(indoorResults),
+		Outdoor: mapMeasurements(outdoorResults),
 	}
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	json.NewEncoder(w).Encode(mapMeasurements(response.Results))
+	encoder := json.NewEncoder(w)
+	encoder.Encode(response)
 }

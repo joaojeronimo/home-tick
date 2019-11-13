@@ -1,7 +1,8 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-const Card = styled.div`
+const Card = styled.div<{ measurement: measurement }>`
+  ${({ measurement }) => `grid-area: ${measurement.location}-${measurement.id};`}
   margin: 20px;
   display: flex;
   justify-content: center;
@@ -39,9 +40,9 @@ interface MeasurementCardProps {
 }
 
 const MeasurementCard = ({ measurement }: MeasurementCardProps) => (
-  <Card>
+  <Card measurement={measurement}>
     <CardContent>
-      <Label>{measurement.label}</Label>
+      <Label>{measurement.locationEmoji} {measurement.label}</Label>
       <Reading>
         <Value>{measurement.value}</Value>
         <Unit>{measurement.unit}</Unit>

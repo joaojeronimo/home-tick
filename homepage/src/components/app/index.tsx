@@ -30,33 +30,52 @@ const Wrapper = styled.div`
   min-height: 100vh;
 `
 
+const Cards = styled.div`
+  display: grid;
+  grid-template-areas:
+    ". . . . "
+    ". indoor-SDS_P2 outdoor-SDS_P2 ."
+    ". indoor-SDS_P1 outdoor-SDS_P1 ."
+    ". indoor-humidity indoor-temperature ."
+    ". . . . ";
+`
+
 interface AppState {
-  measurements: measurement[]
+  indoor: measurement[]
+  outdoor: measurement[]
 }
 
 class App extends React.PureComponent<{}, AppState> {
   state: AppState = {
-    measurements: [],
+    indoor: [],
+    outdoor: []
   }
 
   componentDidMount() {
-    ;(async () => {
+    ; (async () => {
       const res = await fetch(`https://api.${config.tld}/initial-payload`)
-      const measurements = await res.json()
+      const { indoor, outdoor } = await res.json()
       this.setState({
-        measurements: measurements.map(mapMeasurement),
+        indoor: indoor.map(mapMeasurement('indoor')),
+        outdoor: outdoor.map(mapMeasurement('outdoor'))
       })
     })()
   }
 
   render() {
-    const { measurements } = this.state
+    const { indoor, outdoor } = this.state
     return (
       <Wrapper>
         <GlobalStyle />
-        {measurements.map(measurement => (
-          <MeasurementCard key={measurement.label} measurement={measurement} />
-        ))}
+
+        <Cards>
+          {indoor.map(measurement => (
+            <MeasurementCard key={measurement.label} measurement={measurement} />
+          ))}
+          {outdoor.map(measurement => (
+            <MeasurementCard key={measurement.label} measurement={measurement} />
+          ))}
+        </Cards>
       </Wrapper>
     )
   }

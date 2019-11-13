@@ -8,7 +8,7 @@ const measurementSettings = {
     unit: 'µg/m³',
   },
   humidity: {
-    label: 'relative humidity',
+    label: 'humidity',
     unit: '%',
   },
   temperature: {
@@ -19,13 +19,15 @@ const measurementSettings = {
 
 type measurementID = 'SDS_P1' | 'SDS_P2' | 'humidity' | 'temperature'
 
-export const mapMeasurement = ({
+export const mapMeasurement = (location: 'indoor' | 'outdoor') => ({
   id,
   value,
 }: {
   id: measurementID
   value: number
 }) => ({
+  location,
+  locationEmoji: location === 'indoor' ? '🏠' : '🏙️',
   id,
   value,
   ...measurementSettings[id],
