@@ -10,6 +10,9 @@ api.{$TLD} {
     Access-Control-Allow-Methods "GET, POST, OPTIONS"
   }
   proxy / api:9999
+
+  log stdout  
+  errors stderr
 }
 
 dashboard.{$TLD} {
@@ -19,6 +22,9 @@ dashboard.{$TLD} {
 
 write.{$TLD} {
   tls self_signed
+
+  log stdout  
+  errors stderr
 
   basicauth / {$SENSOR_USERNAME} ${SENSOR_PASSWORD}
 
