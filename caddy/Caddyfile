@@ -27,7 +27,7 @@ write.{$TLD} {
   log stdout
   errors stderr
 
-  basicauth / {$SENSOR_USERNAME} ${SENSOR_PASSWORD}
+  basicauth / {$SENSOR_USERNAME} {$SENSOR_PASSWORD}
 
   proxy /write influxdb:8086
 }
