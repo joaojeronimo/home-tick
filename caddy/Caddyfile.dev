@@ -20,7 +20,7 @@ dashboard.{$TLD} {
 write.{$TLD} {
   tls self_signed
 
-  basicauth / {$SENSOR_USERNAME} ${SENSOR_PASSWORD}
+  basicauth / {$SENSOR_USERNAME} {$SENSOR_PASSWORD}
 
   proxy /write influxdb:8086
 }

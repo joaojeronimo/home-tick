@@ -29,7 +29,9 @@ services:
   caddy:
     build: ./caddy
     environment:
-      TLD: ${TLD}
+      TLD: '${TLD}'
+      SENSOR_USERNAME: '${SENSOR_USERNAME}'
+      SENSOR_PASSWORD: '${SENSOR_PASSWORD}'
     restart: always
     volumes:
       - /var/lib/caddy:/root/.caddy
