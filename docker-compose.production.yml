@@ -1,4 +1,4 @@
-version: "3.7"
+version: '3.7'
 
 services:
   influxdb:
@@ -29,9 +29,9 @@ services:
   caddy:
     build: ./caddy
     environment:
-      TLD: ${TLD}
-      SENSOR_USERNAME: ${SENSOR_USERNAME}
-      SENSOR_PASSWORD: ${SENSOR_PASSWORD}
+      TLD: '${TLD}'
+      SENSOR_USERNAME: '${SENSOR_USERNAME}'
+      SENSOR_PASSWORD: '${SENSOR_PASSWORD}'
     restart: always
     volumes:
       - /var/lib/caddy:/root/.caddy
@@ -52,4 +52,4 @@ services:
     build:
       context: ./homepage
       args:
-        TLD: "${TLD}"
+        TLD: '${TLD}'
